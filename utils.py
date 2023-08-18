@@ -6,7 +6,7 @@ from datetime import datetime
 # of the command and the arguments
 def parseInput(input: str) -> dict:
     input = input.split(" ")
-    command = input[0]
+    command = input[0].lower()
     args = input[1:]
     return command, args
 
@@ -21,3 +21,5 @@ def isValidCommand(command: str) -> bool:
 
 def sendMessage(message, text) :
     message.channel.send(text)
+    
+

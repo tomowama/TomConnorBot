@@ -22,10 +22,10 @@ async def on_message(message):
     if not utils.isValidCommand(command):
         return
 
-    if "$test" == command.lower():
+    if "$test" == command:
         await message.channel.send("We are online")
 
-    if "$setbirthday" == command.lower():
+    if "$setbirthday" == command:
         await birthdays.setBirthday(message)
 
 client.run(os.getenv('DISCORD_TOKEN'))
