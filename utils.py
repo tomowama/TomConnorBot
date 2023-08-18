@@ -17,5 +17,8 @@ def convertDateToDateTime(date: str) -> datetime:
 def isValidDiscordId(discordId: str) -> bool:
     return (discordId[0] == "<" and discordId[1] == "@" and discordId[-1] == ">")
 
+def isValidCommand(command: str) -> bool:
+    return (command[0] == "$")
+
 def sendMessage(message, text) :
     message.channel.send(text)

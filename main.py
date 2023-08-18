@@ -32,6 +32,9 @@ blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 async def on_message(message):
     print(message.content)
     userInput = utils.parseInput(message.content)
+    if not utils.isValidCommand(userInput.command):
+        return
+
     if "$test" == userInput.command.lower():
         await message.channel.send("We are online")
 
