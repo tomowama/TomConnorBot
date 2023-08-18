@@ -28,7 +28,7 @@ async def on_message(message):
     if "$setbirthday" == command.lower():
         await birthdays.setBirthday(message)
 
-    if "$gebirthday" == command.lower():
+    if "$getbirthday" == command.lower():
         await birthdays.getBirthday(message)
 
 client.run(os.getenv('DISCORD_TOKEN'))
