@@ -1,5 +1,3 @@
-import discord
-import os
 from datetime import datetime
 
 # function that parses the input of a discord command and outputs a dictionary
@@ -22,5 +20,8 @@ def isValidDiscordId(discordId: str) -> bool:
 def isValidCommand(command: str) -> bool:
     return (command[0] == "$")
 
-def sendMessage(message, text) :
-    message.channel.send(text)
+def validateLengthOfArgs(args: list, length: int) -> bool:
+    return len(args) == length
+
+async def sendMessage(message, text) :
+    await message.channel.send(text)

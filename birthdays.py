@@ -1,22 +1,31 @@
 import datetime
 import utils
-import discord
-import os
 
 # $addbirthday <discordID> <month>/<day>
 # $addbirthday @ConnorGoodman 1/8
 async def setBirthday(message) :
-    utils.sendMessage(message, "Setting birthday")
+    await utils.sendMessage(message, "Setting birthday")
     command, args = utils.parseInput(message.content)
+
+    if (not utils.validateLengthOfArgs(args, 2)) :
+        await utils.sendMessage(message, "Invalid number of arguments")
+        return
+    
     userId = args[0]
+
+    if (not utils.isValidDiscordId(userId)) :
+        await utils.sendMessage(message, "Invalid discord user")
+        return
+    
     birthdayString = args[1]
-    birthdayDateTime = utils.convertDateToDateTime(birthdayString)
+    birthdayDateTime = utils.convertDateStringToDateTime(birthdayString)
     if (not isValidBirthday(birthdayDateTime)) :
-        utils.sendMessage(message, "Invalid birthday")
+        await utils.sendMessage(message, "Invalid birthday")
         return
     
     createUserIfDoesntExist(userId)
     setBirthdayInDatabase(userId, birthdayDateTime)
+    await utils.sendMessage(message, "Birthday set")
 
 def isValidBirthday(birthday: datetime) -> bool:
     return birthday < datetime.datetime.now()
@@ -41,18 +50,27 @@ def insertUserIntoDatabase(userId: str):
 # $getbirthday <discordID>
 # $getbirthday @ConnorGoodman
 async def getBirthday(message):
-    utils.sendMessage(message, "Getting birthday")
+    await utils.sendMessage(message, "Getting birthday")
     command, args = utils.parseInput(message.content)
+
+    if (not utils.validateLengthOfArgs(args, 1)) :
+        await utils.sendMessage(message, "Invalid number of arguments")
+        return
+    
     userId = args[0]
 
+    if (not utils.isValidDiscordId(userId)) :
+        await utils.sendMessage(message, "Invalid discord user")
+        return
+
     if (not userExistsInDatabase) :
-        utils.sendMessage(message, "User does not exist")
+        await utils.sendMessage(message, "User does not exist")
         return
     
     birthdayDateTime = getBirthdayFromDatabase(userId)
     birthdayDateString = utils.convertDateTimeToDateString(birthdayDateTime)
 
-    utils.sendMessage(message, birthdayDateString)
+    await utils.sendMessage(message, "Birthday: " + birthdayDateString)
 
 def getBirthdayFromDatabase(userId: str) -> datetime:
     # TODO: get birthday from database
