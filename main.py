@@ -22,6 +22,7 @@ blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 async def on_message(message):
     print(message.content)
     command, args = utils.parseInput(message.content)
+    authorID = utils.toStrID(message.author.id) # gives message author id in <@123123> format
     if not utils.isValidCommand(command):
         return
 
@@ -35,14 +36,12 @@ async def on_message(message):
         await birthdays.getBirthday(message)
         
     if "$track" == command: # strart tracking a user and checks if the message is valid 
-        if utils.validateLengthOfArgs(args,1) and utils.isValidDiscordID(args[0]): # ensures there is only one argument, makes sure arg is an valid ID
-            if not utils.isTracked(args[0]):
-                utils.addActivity(args[0])
-                await message.channel.send(f"Started tracking {args[0]}")
-            else:
-                await message.channel.send(f"Already tracking {args[0]}")
+        if not utils.isValidDiscordIDSingle(args): # ensures there is only one argument, makes sure arg is an valid ID
+            await message.channel.send("Invalid use of command. Use like: $track @user")
+        elif activity.track(args):
+            await message.channel.send(f"Started Tracking {args[0]}")
         else:
-            await message.channel.send(f"Not a valid arugment. To use properly send: $track @user")
+            await message.channel.send(f"Already Tracking {args[0]}")
             
         
 client.run(os.getenv('DISCORD_TOKEN'))
