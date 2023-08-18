@@ -2,6 +2,8 @@ import datetime
 import discord
 import os
 import json
+import birthdays
+import utils
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, __version__
 from dotenv import load_dotenv
 
@@ -51,7 +53,7 @@ async def on_message(message):
         await message.channel.send("We are online")
 
     if '$addbirthday' in message.content.lower():
-        await addBirthday(message)
+        await birthdays.addBirthday(message)
 
 ###################################################
 ################ COMMANDS #########################
@@ -64,48 +66,8 @@ async def on_message(message):
 ################ FUNCTIONS ########################
 ###################################################
 
-# $addbirthday <name> <month>/<day>
-# $addbirthday Connor Goodman 1/8
-async def addBirthday(message) :
-    input = parseInput(message.content)
-    month = input[1]
-    day = int(input[2])
 
-    birthdays = getAllBirthdays()
-    foundBday = checkIfBirthdayExists(birthdays)
 
-    if (not foundBday):
-        insertBirthday()
-
-    f = open("birthdays.json", "w")
-    json.dump(birthdays, f)
-    f.close()
-
-def convertDateToDateTime(date: str) -> datetime:
-    return datetime.strptime(date, '%m/%d')
-
-def getAllBirthdays() -> list[dict]:
-    f = open("birthdays.json", "r")
-    birthdays = json.load(f)
-    f.close()
-    return birthdays
-
-def checkIfBirthdayExists(birthdays) -> bool:
-    for x in birthdays:
-        if (x['name'].lower() == name.lower()):
-            x['day'] = day
-            x['month'] = month
-            message.channel.send('Changed birthday!')
-
-def insertBirthday() :
-    dict = {'name': name, 'day': day, 'month': month}
-    birthdays.append(dict)
-    f = open("birthdays.json", "w")
-    json.dump(birthdays, f)
-    f.close()
-    message.channel.send('Added birthday!')
-    
-    
 ###################################################
 ################ FUNCTIONS ########################
 ###################################################
