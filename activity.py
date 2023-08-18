@@ -5,11 +5,19 @@ import os
 
 TIMEGAP = 60 # ammount of time for full point messages in minutes
 
+def track(args) -> bool: # tracks user and checks if they are tracked and if message is valid
+    if not utils.isTracked(args[0]):
+        utils.addActivity(args[0])
+        return True
+    else:
+        return False
+    
+            
+
 # update points for a user, assumes user is being tracked
 def givePoints(id:str, points:int):
     jn = utils.openJSON()
     jn["activity"]["user"][id]["points"] += points
-    print(jn["activity"]["user"][id]["points"])
     utils.writeJSON(jn)
 
 
