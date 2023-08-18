@@ -5,6 +5,7 @@ import json
 import birthdays
 import utils
 import activity
+import loop 
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, __version__
 from dotenv import load_dotenv
 
@@ -17,6 +18,11 @@ storage_str = os.getenv('AZURE_STORAGE_ACCOUNT_NAME')
 blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 
 
+
+@client.event
+async def on_ready(): # runs on startup 
+    client.loop.create_task(loop.everyMinute())
+    print('We have logged in as {0.user}'.format(client))
 
 @client.event
 async def on_message(message):
