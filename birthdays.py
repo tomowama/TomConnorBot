@@ -6,6 +6,7 @@ import os
 # $addbirthday <discordID> <month>/<day>
 # $addbirthday @ConnorGoodman 1/8
 async def setBirthday(message) :
+    utils.sendMessage(message, "We are online")
     input = utils.parseInput(message.content)
     userId = input[1]
     birthdayString = input[2]

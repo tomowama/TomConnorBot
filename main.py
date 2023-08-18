@@ -18,25 +18,6 @@ connect_str = os.getenv('AZURE_BLOB_CONNECTION_STRING')
 storage_str = os.getenv('AZURE_STORAGE_ACCOUNT_NAME')
 blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 
-filesToGet = [] # files that will be pulled from the blob on inital startup
-
-def getBlobs(files: list[str]): #retrieves content of files from the blob
-
-    for fileName in files:
-        blob_client = blob_service_client.get_blob_client(
-            container=storage_str, blob=fileName)
-        
-        with open(fileName, "wb") as my_blob:
-            stream = blob_client.download_blob()
-            data = stream.readall()
-            my_blob.write(data)
-
-def writeToBlob(fileName: str):  # write local changes of a file to the blob
-    blob_client = blob_service_client.get_blob_client(container=storage_str, blob=fileName)
-
-    with open(fileName, "rb") as data:
-        blob_client.upload_blob(data, overwrite=True)
-
 ###################################################
 ################# BLOB STUFF ######################
 ###################################################
@@ -49,28 +30,18 @@ def writeToBlob(fileName: str):  # write local changes of a file to the blob
 
 @client.event
 async def on_message(message):
-    if "$test" in message.content.lower():
+    print(message.content)
+    userInput = utils.parseInput(message.content)
+    if "$test" == userInput.command.lower():
         await message.channel.send("We are online")
 
-    if '$addbirthday' in message.content.lower():
-        await birthdays.addBirthday(message)
+    if "$setbirthday" == userInput.lower():
+        await birthdays.setBirthday(message)
 
 ###################################################
 ################ COMMANDS #########################
 ###################################################
 
-
-
-
-###################################################
-################ FUNCTIONS ########################
-###################################################
-
-
-
-###################################################
-################ FUNCTIONS ########################
-###################################################
 
 
 client.run(os.getenv('DISCORD_TOKEN'))
