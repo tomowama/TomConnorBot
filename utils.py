@@ -10,8 +10,11 @@ def parseInput(input: str) -> dict:
     args = input[1:]
     return command, args
 
-def convertDateToDateTime(date: str) -> datetime:
+def convertDateStringToDateTime(date: str) -> datetime:
     return datetime.strptime(date, '%m/%d')
+
+def convertDateTimeToDateString(date: datetime) -> str:
+    return date.strftime('%m/%d')
 
 def isValidDiscordId(discordId: str) -> bool:
     return (discordId[0] == "<" and discordId[1] == "@" and discordId[-1] == ">")
