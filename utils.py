@@ -23,5 +23,12 @@ def isValidCommand(command: str) -> bool:
 def validateLengthOfArgs(args: list, length: int) -> bool:
     return len(args) == length
 
+def isValidDateString(date: str) -> bool:
+    try:
+        datetime.strptime(date, '%m/%d')
+        return True
+    except ValueError:
+        return False
+    
 async def sendMessage(message, text) :
     await message.channel.send(text)

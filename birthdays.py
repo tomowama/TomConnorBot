@@ -18,17 +18,16 @@ async def setBirthday(message) :
         return
     
     birthdayString = args[1]
-    birthdayDateTime = utils.convertDateStringToDateTime(birthdayString)
-    if (not isValidBirthday(birthdayDateTime)) :
-        await utils.sendMessage(message, "Invalid birthday")
+
+    if (not utils.isValidDateString(birthdayString)) :
+        await utils.sendMessage(message, "Invalid date format")
         return
+    
+    birthdayDateTime = utils.convertDateStringToDateTime(birthdayString)
     
     createUserIfDoesntExist(userId)
     setBirthdayInDatabase(userId, birthdayDateTime)
     await utils.sendMessage(message, "Birthday set")
-
-def isValidBirthday(birthday: datetime) -> bool:
-    return birthday < datetime.datetime.now()
 
 def createUserIfDoesntExist(userId: str):
     # TODO: check if user exists in the database
