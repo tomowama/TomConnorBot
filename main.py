@@ -11,40 +11,21 @@ load_dotenv()
 
 client = discord.Client(command_prefix='?', intents=discord.Intents.all())
 
-###################################################
-################# BLOB STUFF ######################
-###################################################
 connect_str = os.getenv('AZURE_BLOB_CONNECTION_STRING')
 storage_str = os.getenv('AZURE_STORAGE_ACCOUNT_NAME')
 blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 
-###################################################
-################# BLOB STUFF ######################
-###################################################
-
-
-
-###################################################
-################ COMMANDS #########################
-###################################################
-
 @client.event
 async def on_message(message):
     print(message.content)
-    userInput = utils.parseInput(message.content)
-    if not utils.isValidCommand(userInput.command):
+    command, args = utils.parseInput(message.content)
+    if not utils.isValidCommand(command):
         return
 
-    if "$test" == userInput.command.lower():
+    if "$test" == command.lower():
         await message.channel.send("We are online")
 
-    if "$setbirthday" == userInput.lower():
+    if "$setbirthday" == command.lower():
         await birthdays.setBirthday(message)
-
-###################################################
-################ COMMANDS #########################
-###################################################
-
-
 
 client.run(os.getenv('DISCORD_TOKEN'))

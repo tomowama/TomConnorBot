@@ -8,8 +8,7 @@ def parseInput(input: str) -> dict:
     input = input.split(" ")
     command = input[0]
     args = input[1:]
-    input = {"command": command, "args": args}
-    return input
+    return command, args
 
 def convertDateToDateTime(date: str) -> datetime:
     return datetime.strptime(date, '%m/%d')
