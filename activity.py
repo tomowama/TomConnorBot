@@ -3,27 +3,53 @@ import utils
 import discord
 import os
 
+TIMEGAP = 60 # ammount of time for full point messages in minutes
+
+# update points for a user, assumes user is being tracked
+def givePoints(id:str, points:int):
+    jn = utils.openJSON()
+    jn["activity"]["user"][id]["points"] += points
+    print(jn["activity"]["user"][id]["points"])
+    utils.writeJSON(jn)
+
+
 # Converts a message into a value of points based on recentcy of last word
 def getMessageValue(currTime, lastTime):
     deltaTime = abs(lastTime - currTime)
-    if deltaTime > 2:
-        deltaTime += 0.05
-    if deltaTime < timeGap:
-        return max(deltaTime / timeGap, 0.01)
+    if deltaTime < TIMEGAP:
+        return max(deltaTime / TIMEGAP, 0.01)
     else:
         return 1
-    
-# go through reconigzed voice channels to give points to users
+
+def giveMessagePoints(id:str):
+    if not utils.isTracked(id):
+        return
+    # need to get last time they send message for JSON
+    lastTime = utils.getLastMessageTime(id)
+    currTime = utils.convertDateTimeToInt()
+    points = getMessageValue(currTime,lastTime)
+    utils.updateLastMessageTime(id,currTime)
+    givePoints(id,points)
+  
+# go through reconigzed voice channels to give points to users will be run every minute
 def getVoiceValue(channels: list[int]):
     # loop over channels and give a point to a user 
-    pass
-# update points for a user
-def givePoints(id:str, points:int):
+    # give 0.025 points per minute
+    for channelNum in channels:
+        channel = main.client.get_channel(channelNum)
+        if len(channel.members > 1):
+            for mem in channel.members:
+                
+                givePoints(utils.toStrID(mem.id),0.025)
+        
+    
+
+def genWeeklyLeaderboard() -> list[list[str]]:
     pass
 
-# add person to activity tracker
-def addActivity(id:str):
+def genAllTimeLeaderboard() -> list[list[str]]:
     pass
 
 
+    
 
