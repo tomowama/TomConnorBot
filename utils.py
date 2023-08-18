@@ -45,7 +45,7 @@ def convertDateTimeToInt() -> int:
 
 ############################# Validation ###########################################
 
-def isValidDiscordId(discordId: str) -> bool:
+def isValidDiscordID(discordId: str) -> bool:
     return (discordId[0] == "<" and discordId[1] == "@" and discordId[-1] == ">")
 
 def isValidCommand(command: str) -> bool:
@@ -60,6 +60,8 @@ def isValidDateString(date: str) -> bool:
         return True
     except ValueError:
         return False
+
+
 
 ############################# Validation ###########################################
 
@@ -97,7 +99,7 @@ def updateLastMessageTime(id:str,time:int):
         
 # add person to activity tracker
 def addActivity(id:str):
-    if not isTracked:
+    if not isTracked(id):
         jn = openJSON()
         jn["activity"]["user"][id] = {"points": 0, "lastMsg": 0}
         writeJSON(jn)

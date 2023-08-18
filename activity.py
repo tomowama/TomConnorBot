@@ -32,16 +32,17 @@ def giveMessagePoints(id:str):
     givePoints(id,points)
   
 # go through reconigzed voice channels to give points to users will be run every minute
-def getVoiceValue(channels: list[int]):
+def giveVoicePoints(channels: list[int]):
     # loop over channels and give a point to a user 
     # give 0.025 points per minute
     for channelNum in channels:
         channel = main.client.get_channel(channelNum)
         if len(channel.members > 1):
             for mem in channel.members:
-                
-                givePoints(utils.toStrID(mem.id),0.025)
-        
+                memID = utils.toStrID(mem.id)
+                if utils.isTracked(memID):
+                    givePoints(memID,0.025)
+
     
 
 def genWeeklyLeaderboard() -> list[list[str]]:

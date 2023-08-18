@@ -34,4 +34,15 @@ async def on_message(message):
     if "$getbirthday" == command:
         await birthdays.getBirthday(message)
         
+    if "$track" == command: # strart tracking a user and checks if the message is valid 
+        if utils.validateLengthOfArgs(args,1) and utils.isValidDiscordID(args[0]): # ensures there is only one argument, makes sure arg is an valid ID
+            if not utils.isTracked(args[0]):
+                utils.addActivity(args[0])
+                await message.channel.send(f"Started tracking {args[0]}")
+            else:
+                await message.channel.send(f"Already tracking {args[0]}")
+        else:
+            await message.channel.send(f"Not a valid arugment. To use properly send: $track @user")
+            
+        
 client.run(os.getenv('DISCORD_TOKEN'))
