@@ -4,6 +4,7 @@ import os
 import json
 import birthdays
 import utils
+import activity
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, __version__
 from dotenv import load_dotenv
 
@@ -14,6 +15,8 @@ client = discord.Client(command_prefix='?', intents=discord.Intents.all())
 connect_str = os.getenv('AZURE_BLOB_CONNECTION_STRING')
 storage_str = os.getenv('AZURE_STORAGE_ACCOUNT_NAME')
 blob_service_client = BlobServiceClient.from_connection_string(connect_str)
+
+
 
 @client.event
 async def on_message(message):
@@ -28,7 +31,7 @@ async def on_message(message):
     if "$setbirthday" == command:
         await birthdays.setBirthday(message)
 
-    if "$getbirthday" == command.lower():
+    if "$getbirthday" == command:
         await birthdays.getBirthday(message)
-
+        
 client.run(os.getenv('DISCORD_TOKEN'))
