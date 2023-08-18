@@ -9,7 +9,7 @@ def parseInput(input: str) -> dict:
     args = input[1:]
     return command, args
 
-async def sendMessage(message, text) :
+async def sendMessage(message, text):
     await message.channel.send(text)
 
 def toStrID(id:int) -> str:
@@ -60,6 +60,11 @@ def isValidDateString(date: str) -> bool:
         return True
     except ValueError:
         return False
+    
+def isValidDiscordIDSingle(args: list[str]) -> bool: # checks if args are a valid discord id, only one allowed. so arg has to be of len 1 and just a id
+    if validateLengthOfArgs(args,1) and isValidDiscordID(args[0]): # ensures there is only one argument, makes sure arg is an valid ID
+        return True
+    return False
 
 
 
