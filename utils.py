@@ -98,6 +98,7 @@ def updateLastMessageTime(id:str,time:int):
 # add person to activity tracker
 def addActivity(id:str):
     if not isTracked:
+        jn = openJSON()
         jn["activity"]["user"][id] = {"points": 0, "lastMsg": 0}
         writeJSON(jn)
     
