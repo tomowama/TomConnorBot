@@ -5,7 +5,8 @@ import os
 
 TIMEGAP = 60 # ammount of time for full point messages in minutes
 
-def track(args) -> bool: # tracks user and checks if they are tracked and if message is valid
+
+def track(args: list[str]) -> bool: # tracks user and checks if they are tracked and if message is valid
     if not utils.isTracked(args[0]):
         utils.addActivity(args[0])
         return True
@@ -40,12 +41,12 @@ def giveMessagePoints(id:str):
     givePoints(id,points)
   
 # go through reconigzed voice channels to give points to users will be run every minute
-def giveVoicePoints(channels: list[int]):
+def giveVoicePoints(client, channels: list[str]):
     # loop over channels and give a point to a user 
     # give 0.025 points per minute
     for channelNum in channels:
-        channel = main.client.get_channel(channelNum)
-        if len(channel.members > 1):
+        channel = client.get_channel(int(channelNum)) # THIS DOESN'T WORK BECASUE OF CIRCULAR IMPORT 
+        if len(channel.members )>0:
             for mem in channel.members:
                 memID = utils.toStrID(mem.id)
                 if utils.isTracked(memID):

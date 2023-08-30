@@ -5,9 +5,12 @@ import json
 
 def parseInput(input: str) -> dict:
     input = input.split(" ")
-    command = input[0].lower()
-    args = input[1:]
-    return command, args
+    if " " in input:
+        command = input[0].lower()
+        args = input[1:]
+        return command, args
+    else:
+        return input[0], None
 
 async def sendMessage(message, text):
     await message.channel.send(text)

@@ -21,7 +21,7 @@ blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 
 @client.event
 async def on_ready(): # runs on startup 
-    client.loop.create_task(loop.everyMinute())
+    client.loop.create_task(loop.everyMinute(client))
     print('We have logged in as {0.user}'.format(client))
 
 @client.event
@@ -32,16 +32,17 @@ async def on_message(message):
     if not utils.isValidCommand(command):
         return
 
-    if "$test" == command:
+    elif "$test" == command:
         await message.channel.send("We are online")
-
-    if "$setbirthday" == command:
+    elif args == None:
+        await message.channel.send("Not a valid command, or no arugments")
+    elif "$setbirthday" == command:
         await birthdays.setBirthday(message)
 
-    if "$getbirthday" == command:
+    elif "$getbirthday" == command:
         await birthdays.getBirthday(message)
         
-    if "$track" == command: # strart tracking a user and checks if the message is valid 
+    elif "$track" == command: # strart tracking a user and checks if the message is valid 
         if not utils.isValidDiscordIDSingle(args): # ensures there is only one argument, makes sure arg is an valid ID
             await message.channel.send("Invalid use of command. Use like: $track @user")
         elif activity.track(args):
