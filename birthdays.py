@@ -91,7 +91,7 @@ def userExistsJson(userId: str) -> bool:
             return True
         else:
             return False
-        
+
 #this function sets a users birthday in the json file
 def setBirthdayJson(userId: str, birthday: datetime):
     with open('users.json', 'r') as f:
@@ -113,3 +113,15 @@ def getBirthdayJson(userId: str) -> datetime:
     with open('users.json', 'r') as f:
         users = json.load(f)
         return datetime.strptime(users[userId], '%m/%d')
+    
+def getAllBirthdaysWithDate(date: datetime) -> list[str]:
+    return getAllBirthdaysWithDateJson(date)
+
+def getAllBirthdaysWithDateJson(date: datetime) :
+    with open('users.json', 'r') as f:
+        users = json.load(f)
+        birthdays = []
+        for user in users:
+            if (users[user] == date.strftime('%m/%d')):
+                birthdays.append(user)
+        return birthdays

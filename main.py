@@ -5,19 +5,23 @@ import json
 import birthdays
 import utils
 import activity
-import loop 
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, __version__
+import loop
 from dotenv import load_dotenv
+from azure.data.tables import TableServiceClient
 
 load_dotenv()
 
 client = discord.Client(command_prefix='?', intents=discord.Intents.all())
 
-connect_str = os.getenv('AZURE_BLOB_CONNECTION_STRING')
+connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
 storage_str = os.getenv('AZURE_STORAGE_ACCOUNT_NAME')
-blob_service_client = BlobServiceClient.from_connection_string(connect_str)
+users_table_name = os.getenv('USERS_TABLE_NAME')
+globla_data_table_name = os.getenv('GLOBAL_DATA_TABLE_NAME')
+timezone = os.getenv('TIMEZONE')
 
-
+table_service_client = TableServiceClient.from_connection_string(connect_str)
+global_data_client = table_service_client.get_table_client(globla_data_table_name)
+users_client = table_service_client.get_table_client(users_table_name)
 
 @client.event
 async def on_ready(): # runs on startup 
