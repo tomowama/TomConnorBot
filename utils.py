@@ -19,6 +19,8 @@ def toStrID(id:int) -> str:
 
 ############################# DateTime ###########################################
 
+def getCurrentDateTime() -> datetime:
+    return datetime.now()
 
 def convertDateStringToDateTime(date: str) -> datetime:
     return datetime.strptime(date, '%m/%d')
@@ -80,9 +82,22 @@ def openJSON() -> dict:
     f.close()
     return users
 
+# opens JSON
+def openDataJSON() -> dict:
+    f = open('data.json','r+')
+    data = json.load(f)
+    f.close()
+    return data
+
 #writes a dict to a JSON
 def writeJSON(dic):
     f = open('users.json','r+')
+    json.dump(dic, f)
+    f.close()
+
+#writes a dict to a JSON
+def writeDataJSON(dic):
+    f = open('data.json','r+')
     json.dump(dic, f)
     f.close()
 
